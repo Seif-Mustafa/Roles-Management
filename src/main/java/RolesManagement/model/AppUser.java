@@ -1,0 +1,39 @@
+package RolesManagement.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="app_user")
+public class AppUser {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
+    private Long userId;
+
+    @Column(name="app_username")
+    private String appUsername;
+
+    @Column(name="app_password")
+    private String appPassword;
+
+    @Column(name="email")
+    private String email;
+
+    @Column(name="is_active")
+    private char isActive;
+
+    @Column(name="action_by")
+    private Long actionBy;
+
+    @Column(name="action_on")
+    private Timestamp actionOn;
+}
