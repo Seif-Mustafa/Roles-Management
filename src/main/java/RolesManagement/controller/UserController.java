@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -47,8 +47,7 @@ public class UserController {
         return ApiResponse.success(userService.getAllUsers(), "Users Returned Successfully");
     }
 
-    @GetMapping("/test-user")
-    public String userTest() {
-        return "User controller is working ";
-    }
+
+
+
 }
