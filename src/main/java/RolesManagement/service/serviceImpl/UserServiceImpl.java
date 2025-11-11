@@ -2,6 +2,7 @@ package RolesManagement.service.serviceImpl;
 
 import RolesManagement.dto.request.CreateUserRequest;
 import RolesManagement.dto.request.UpdateUserRequest;
+import RolesManagement.dto.response.UserRolesResponse;
 import RolesManagement.mapper.UserMapper;
 import RolesManagement.model.AppUser;
 import RolesManagement.repository.UserRepository;
@@ -49,6 +50,23 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public UserRolesResponse getUserRoles(Long userId) {
+        AppUser appUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<UserRolesResponse.AppRoleResponse> roles = userRepository.getUserRoles(userId);
+
+        UserRolesResponse userRolesResponse = new UserRolesResponse();
+
+        userRolesResponse.setUserId(appUser.getUserId());
+        userRolesResponse.setUsername(appUser.getAppUsername());
+        userRolesResponse.setUserRoles(roles);
+
+        return userRolesResponse;
+    }
+
+
 
     public List<AppUser> getAllUsers(){
         return userRepository.findAll();

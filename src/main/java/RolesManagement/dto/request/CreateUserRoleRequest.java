@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddUserRoleRequest {
+public class CreateUserRoleRequest {
     private Long userId;
     private Long roleId;
     private Long actionBy;

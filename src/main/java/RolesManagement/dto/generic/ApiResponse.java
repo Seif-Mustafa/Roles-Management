@@ -1,17 +1,17 @@
 package RolesManagement.dto.generic;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.sql.Timestamp;
+import java.time.Instant;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.OffsetDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -52,6 +52,7 @@ public class ApiResponse<T>{
         response.setSuccess(true);
         response.setMessage(message);
         response.setData(data);
+        response.setStatus(201);
 //        response.setTimestamp(LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

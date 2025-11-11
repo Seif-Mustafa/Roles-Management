@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRoleResponse {
+public class UserRolesResponse {
     private Long userId;
-
     private String username;
 
     private List<AppRoleResponse> userRoles;
@@ -21,9 +20,9 @@ public class UserRoleResponse {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public class AppRoleResponse{
+    public static class AppRoleResponse{
         private Long roleId;
         private String roleName;
-        private String roleDescription;
+        private String description;
     }
 }

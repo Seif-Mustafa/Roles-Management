@@ -1,13 +1,16 @@
 package RolesManagement.controller;
 
 import RolesManagement.dto.generic.ApiResponse;
-import RolesManagement.dto.request.AddUserRoleRequest;
-import RolesManagement.dto.response.UserRoleResponse;
-import RolesManagement.model.AppUser;
+import RolesManagement.dto.request.CreateUserRoleRequest;
+import RolesManagement.dto.response.UserRolesResponse;
+import RolesManagement.model.AppUserRole;
 import RolesManagement.service.UserRoleService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import RolesManagement.service.UserService;
 
 @RestController
 @RequestMapping("/user-role")
@@ -15,14 +18,20 @@ public class UserRoleController {
 
     @Autowired
     UserRoleService userRoleService;
+    @Autowired
+    UserService userService;
 
-//    @PostMapping("/{userId}/role")
-//    public ResponseEntity<ApiResponse<AppUser>> addRoleToUser(@PathVariable Long userId, @RequestBody AddUserRoleRequest addUserRoleRequest){
-//
-////        UserRoleResponse userRolesResponse = userRoleService;
-//
-//
-//
-//    }
+    @PostMapping
+    public ResponseEntity<ApiResponse<AppUserRole>> addRoleToUser(@RequestBody CreateUserRoleRequest createUserRoleRequest) {
+        AppUserRole appUserRole = userRoleService.createUserRole(createUserRoleRequest);
+        return ApiResponse.created(appUserRole, "User Role Created Successfully");
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ApiResponse<UserRolesResponse>> getUserRoles(@PathVariable Long userId){
+        UserRolesResponse userRolesResponse = userService.getUserRoles(userId);
+
+        return ApiResponse.success(userRolesResponse, "User Roles Returned Successfully");
+    }
 
 }
