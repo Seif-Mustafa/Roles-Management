@@ -1,7 +1,9 @@
 package RolesManagement.service;
 
-import RolesManagement.dto.request.AddUserRoleRequest;
+import RolesManagement.dto.request.CreateUserRoleRequest;
+import RolesManagement.model.AppUserRole;
 
 public interface UserRoleService {
-    AddUserRoleRequest createUserRole(AddUserRoleRequest addUserRoleRequest);
+    AppUserRole createUserRole(CreateUserRoleRequest createUserRoleRequest);
+
 }

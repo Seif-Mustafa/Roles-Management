@@ -1,5 +1,7 @@
 package RolesManagement.model;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -8,13 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="app_user_role")
+@Table(name = "app_user_role")
 public class AppUserRole {
 
     @EmbeddedId
@@ -23,15 +23,15 @@ public class AppUserRole {
     @Column(name = "action_by")
     private Long actionBy;
 
-    @Column(name="action_on")
+    @Column(name = "action_on")
     private Timestamp actionOn;
 
 
-    public Long getUserId(){
-        return id != null?id.getUserId():null;
+    public Long getUserId() {
+        return id != null ? id.getUserId() : null;
     }
 
-    public Long getRoleId(){
-        return id !=null?id.getRoleId():null;
+    public Long getRoleId() {
+        return id != null ? id.getRoleId() : null;
     }
 }

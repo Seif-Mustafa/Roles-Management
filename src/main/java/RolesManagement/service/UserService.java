@@ -2,6 +2,7 @@ package RolesManagement.service;
 
 import RolesManagement.dto.request.CreateUserRequest;
 import RolesManagement.dto.request.UpdateUserRequest;
+import RolesManagement.dto.response.UserRolesResponse;
 import RolesManagement.model.AppUser;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface UserService {
     AppUser deleteUser(Long userId);
 
     AppUser getUserById(Long userId);
+
+    UserRolesResponse getUserRoles(Long userId);
 
     List<AppUser> getAllUsers();
 
