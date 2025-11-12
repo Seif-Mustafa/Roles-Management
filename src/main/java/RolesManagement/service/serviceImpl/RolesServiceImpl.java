@@ -1,5 +1,11 @@
 package RolesManagement.service.serviceImpl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import RolesManagement.dto.request.CreateRoleRequest;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
@@ -7,12 +13,6 @@ import RolesManagement.mapper.RoleMapper;
 import RolesManagement.model.AppRole;
 import RolesManagement.repository.RolesRepository;
 import RolesManagement.service.RolesService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RolesServiceImpl implements RolesService {

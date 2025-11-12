@@ -1,12 +1,11 @@
 package RolesManagement.service;
 
+import java.util.List;
+
 import RolesManagement.dto.request.CreateRoleRequest;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 public interface RolesService {
     AppRole createRole(CreateRoleRequest createRoleRequest);

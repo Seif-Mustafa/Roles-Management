@@ -1,28 +1,29 @@
 package RolesManagement.dto.response;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRolesResponse {
+public class UserButtonsResponse {
     private Long userId;
     private String username;
-
-    private List<AppRoleResponse> roles;
+    private List<ButtonResponse> buttons;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AppRoleResponse{
-        private Long roleId;
-        private String roleName;
-        private String description;
+    public static class ButtonResponse{
+        private Long buttonId;
+        private String buttonName;
+        private Long pageId;
+        private char isActive;
     }
+
 }

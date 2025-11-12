@@ -11,18 +11,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRolesResponse {
+public class UserPagesResponse {
     private Long userId;
     private String username;
-
-    private List<AppRoleResponse> roles;
+    private List<PageResponse> pages;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AppRoleResponse{
-        private Long roleId;
-        private String roleName;
-        private String description;
+    public static class PageResponse{
+        private Long pageId;
+        private String pageName;
+        private char isActive;
     }
 }
