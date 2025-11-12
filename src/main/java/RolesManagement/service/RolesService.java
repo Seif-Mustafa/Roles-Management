@@ -1,7 +1,12 @@
 package RolesManagement.service;
 
 import RolesManagement.dto.request.CreateRoleRequest;
+import RolesManagement.dto.response.RolePagesResponse;
+import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 public interface RolesService {
     AppRole createRole(CreateRoleRequest createRoleRequest);
@@ -11,6 +16,12 @@ public interface RolesService {
     AppRole updateRole(Long roleId, CreateRoleRequest createRoleRequest);
 
     AppRole deleteRole(Long roleId);
+
+    List<AppRole> getAllRoles();
+
+    RoleUsersResponse getRoleUsers(Long roleId);
+
+    RolePagesResponse getRolePages(Long roleId);
 
 }
 

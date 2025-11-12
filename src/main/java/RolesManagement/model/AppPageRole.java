@@ -2,8 +2,7 @@ package RolesManagement.model;
 
 import java.sql.Timestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +10,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="app_page_role")
+@Entity
+@Table(name = "app_page_role")
 public class AppPageRole {
 
-    @Column(name="page_id")
-    private Long pageId;
+    @EmbeddedId
+    private AppPageRoleId id;
 
-    @Column(name="role_id")
-    private Long roleId;
-
-    @Column(name="action_by")
+    @Column(name = "action_by")
     private Long actionBy;
 
-    @Column(name="action_on")
+    @Column(name = "action_on")
     private Timestamp actionOn;
+
+    public Long getPageId() {
+        return id != null ? id.getPageId() : null;
+    }
+
+    public Long getRoleId() {
+        return id != null ? id.getRoleId() : null;
+    }
 }

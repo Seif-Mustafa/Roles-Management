@@ -1,13 +1,14 @@
 package RolesManagement.service.serviceImpl;
 
+import RolesManagement.dto.request.CreateUserRoleRequest;
+import RolesManagement.dto.request.DeleteUserRoleRequest;
+import RolesManagement.mapper.UserRoleMapper;
 import RolesManagement.repository.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import RolesManagement.dto.response.UserRolesResponse;
-import RolesManagement.model.AppUser;
 import RolesManagement.model.AppUserRole;
-import RolesManagement.repository.AppUserRoleRepository;
+import RolesManagement.repository.UserRoleRepository;
 import RolesManagement.repository.UserRepository;
 import RolesManagement.service.UserRoleService;
 
@@ -15,7 +16,7 @@ import RolesManagement.service.UserRoleService;
 public class UserRoleServiceImpl implements UserRoleService {
 
     @Autowired
-    AppUserRoleRepository appUserRoleRepository;
+    UserRoleRepository appUserRoleRepository;
     @Autowired
     UserRoleMapper userRoleMapper;
 
@@ -33,6 +34,13 @@ public class UserRoleServiceImpl implements UserRoleService {
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         AppUserRole appUserRole = appUserRoleRepository.save(userRoleMapper.toEntity(createUserRoleRequest));
+        return appUserRole;
+    }
+
+    @Override
+    public AppUserRole deleteUserRole(DeleteUserRoleRequest deleteUserRoleRequest) {
+        AppUserRole appUserRole = appUserRoleRepository.findById(userRoleMapper.toEntity(deleteUserRoleRequest)).orElseThrow(()->new RuntimeException("Record not found"));
+        appUserRoleRepository.delete(appUserRole);
         return appUserRole;
     }
 
