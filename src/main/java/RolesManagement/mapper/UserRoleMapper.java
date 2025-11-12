@@ -1,6 +1,7 @@
 package RolesManagement.mapper;
 
 import RolesManagement.dto.request.CreateUserRoleRequest;
+import RolesManagement.dto.request.DeleteUserRoleRequest;
 import RolesManagement.model.AppUserRole;
 import RolesManagement.model.AppUserRoleId;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,14 @@ public class UserRoleMapper {
         appUserRole.setId(appUserRoleId);
         appUserRole.setActionBy(createUserRoleRequest.getActionBy());
         appUserRole.setActionOn(Timestamp.from(Instant.now()));
-
         return appUserRole;
+    }
+
+    public AppUserRoleId toEntity(DeleteUserRoleRequest deleteUserRoleRequest){
+        AppUserRoleId appUserRoleId = new AppUserRoleId();
+        appUserRoleId.setUserId(deleteUserRoleRequest.getUserId());
+        appUserRoleId.setRoleId(deleteUserRoleRequest.getRoleId());
+        return appUserRoleId;
     }
 
 }

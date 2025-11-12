@@ -1,13 +1,17 @@
 package RolesManagement.service.serviceImpl;
 
 import RolesManagement.dto.request.CreateRoleRequest;
+import RolesManagement.dto.response.RolePagesResponse;
+import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.mapper.RoleMapper;
 import RolesManagement.model.AppRole;
 import RolesManagement.repository.RolesRepository;
 import RolesManagement.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,9 +30,9 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public AppRole getRole(Long roleId){
+    public AppRole getRole(Long roleId) {
         Optional<AppRole> appRole = rolesRepository.findById(roleId);
-        if(appRole.isPresent()){
+        if (appRole.isPresent()) {
             return appRole.get();
         }
         return null;
@@ -41,13 +45,47 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public AppRole deleteRole(Long roleId){
+    public AppRole deleteRole(Long roleId) {
         Optional<AppRole> appRole = rolesRepository.findById(roleId);
-        if(appRole.isPresent()){
+        if (appRole.isPresent()) {
             rolesRepository.delete(appRole.get());
             return appRole.get();
         }
         return null;
+    }
+
+    @Override
+    public List<AppRole> getAllRoles() {
+        return rolesRepository.findAll();
+    }
+
+    @Override
+    public RoleUsersResponse getRoleUsers(Long roleId) {
+        AppRole appRole = rolesRepository.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
+
+        List<RoleUsersResponse.UserResponse> roleUsers = rolesRepository.getRoleUsers(roleId);
+
+        return RoleUsersResponse.builder().roleId(appRole.getRoleId())
+                .roleName(appRole.getRoleName())
+                .description(appRole.getDescription())
+                .users(roleUsers)
+                .build();
+    }
+
+
+    @Override
+    public RolePagesResponse getRolePages(Long roleId) {
+        AppRole appRole = rolesRepository.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
+
+        List<RolePagesResponse.PageResponse> rolePages = rolesRepository.getRolePages(roleId);
+
+        RolePagesResponse rolePagesResponse = new RolePagesResponse();
+
+        return rolePagesResponse.builder().roleId(appRole.getRoleId())
+                .roleName(appRole.getRoleName())
+                .description(appRole.getDescription())
+                .pages(rolePages)
+                .build();
     }
 
 }
