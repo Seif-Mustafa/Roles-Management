@@ -13,9 +13,9 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppPageRoleId implements Serializable {
-    @Column(name = "page_id")
-    private Long pageId;
+public class AppButtonRoleId implements Serializable {
+    @Column(name = "button_id")
+    private Long buttonId;
 
     @Column(name = "role_id")
     private Long roleId;
@@ -24,14 +24,14 @@ public class AppPageRoleId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AppPageRoleId that = (AppPageRoleId) o;
-        return Objects.equals(roleId, that.roleId) &&
-                Objects.equals(pageId, that.pageId);
+        AppButtonRoleId that = (AppButtonRoleId) o;
+        return Objects.equals(buttonId, that.buttonId) &&
+                Objects.equals(roleId, that.roleId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, roleId);
+        return Objects.hash(buttonId, roleId);
     }
 
 }

@@ -2,6 +2,8 @@ package RolesManagement.controller;
 
 import java.util.List;
 
+import RolesManagement.dto.response.UserButtonsResponse;
+import RolesManagement.dto.response.UserPagesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,16 +54,39 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<AppUser>>> getAllUsers(){
+    public ResponseEntity<ApiResponse<List<AppUser>>> getAllUsers() {
         return ApiResponse.success(userService.getAllUsers(), "Users Returned Successfully");
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<AppUser>>> getActiveUsers() {
+        return ApiResponse.success(userService.getActiveUsers(), "Active Users Returned Successfully");
+    }
+
+    @GetMapping("/in-active")
+    public ResponseEntity<ApiResponse<List<AppUser>>> getInActiveUsers() {
+        return ApiResponse.success(userService.getInActiveUsers(), "InActive Users Returned Successfully");
+    }
 
     @GetMapping("/{userId}/roles")
-    public ResponseEntity<ApiResponse<UserRolesResponse>> getUserRoles(@PathVariable Long userId){
+    public ResponseEntity<ApiResponse<UserRolesResponse>> getUserRoles(@PathVariable Long userId) {
         UserRolesResponse userRolesResponse = userService.getUserRoles(userId);
 
         return ApiResponse.success(userRolesResponse, "User Roles Returned Successfully");
     }
+
+    @GetMapping("/{userId}/pages")
+    public ResponseEntity<ApiResponse<UserPagesResponse>> getUserPages(@PathVariable Long userId) {
+        UserPagesResponse userPagesResponse = userService.getUserPages(userId);
+
+        return ApiResponse.success(userPagesResponse, "User Pages Returned Successfully");
+    }
+
+    @GetMapping("/{userId}/buttons")
+    public ResponseEntity<ApiResponse<UserButtonsResponse>> getUserButtons(@PathVariable Long userId) {
+        UserButtonsResponse userButtonsResponse = userService.getUserButtons(userId);
+        return ApiResponse.success(userButtonsResponse, "User Buttons Returned Successfully");
+    }
+
 
 }

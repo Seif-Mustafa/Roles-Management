@@ -3,6 +3,8 @@ package RolesManagement.model;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,19 +13,25 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="app_button_role")
+@Entity
+@Table(name = "app_button_role")
 public class AppButtonRole {
 
-    @Column(name="button_id")
-    private Long buttonId;
+    @EmbeddedId
+    private AppButtonRoleId id;
 
-    @Column(name="role_id")
-    private Long roleId;
-
-    @Column(name="action_by")
+    @Column(name = "action_by")
     private Long actionBy;
 
-    @Column(name="action_on")
+    @Column(name = "action_on")
     private Timestamp actionOn;
+
+    public Long getButtonId() {
+        return id != null ? id.getButtonId() : null;
+    }
+
+    public Long getRoleId() {
+        return id != null ? id.getRoleId() : null;
+    }
 
 }
