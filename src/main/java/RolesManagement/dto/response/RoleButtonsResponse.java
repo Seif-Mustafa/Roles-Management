@@ -11,18 +11,19 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleUsersResponse {
+public class RoleButtonsResponse {
     private Long roleId;
     private String roleName;
     private String description;
-    private List<UserResponse> users;
+    List<ButtonResponse> buttons;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserResponse{
-        private Long userId;
-        private String username;
+    public static class ButtonResponse{
+        private Long buttonId;
+        private String buttonName;
+        private Long pageId;
         private char isActive;
     }
 }

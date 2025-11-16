@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class CreateRoleRequest {
     private String roleName;
     private String description;
+    private char isActive;
     private Long actionBy;
 }

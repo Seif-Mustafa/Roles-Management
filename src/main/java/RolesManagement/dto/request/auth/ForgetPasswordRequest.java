@@ -1,4 +1,4 @@
-package RolesManagement.dto.request;
+package RolesManagement.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,12 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class UpdateUserRequest {
-    private String appUsername;
+public class ForgetPasswordRequest {
+    private String username;
     private String email;
-    private char isActive;
-    private Long actionBy;
 }

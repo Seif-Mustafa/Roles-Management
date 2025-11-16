@@ -93,6 +93,7 @@ public class RolesServiceImpl implements RolesService {
 
         List<RoleButtonsResponse.ButtonResponse> roleButtons = rolesRepository.getRoleButtons(roleId);
 
+
         return RoleButtonsResponse.builder()
                 .roleId(appRole.getRoleId())
                 .roleName(appRole.getRoleName())

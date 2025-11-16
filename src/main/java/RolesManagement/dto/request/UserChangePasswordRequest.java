@@ -6,12 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class UpdateUserRequest {
-    private String appUsername;
-    private String email;
-    private char isActive;
-    private Long actionBy;
+public class UserChangePasswordRequest {
+    private String oldPassword;
+    private String newPassword;
 }

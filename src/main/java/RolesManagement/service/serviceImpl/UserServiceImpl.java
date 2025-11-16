@@ -3,7 +3,11 @@ package RolesManagement.service.serviceImpl;
 import java.util.List;
 import java.util.Optional;
 
+import RolesManagement.dto.request.UserChangePasswordRequest;
+import RolesManagement.utils.EmailService;
+import RolesManagement.utils.RandomPasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import RolesManagement.dto.request.CreateUserRequest;
@@ -15,19 +19,39 @@ import RolesManagement.mapper.UserMapper;
 import RolesManagement.model.AppUser;
 import RolesManagement.repository.UserRepository;
 import RolesManagement.service.UserService;
+import org.thymeleaf.TemplateEngine;
+
+import org.thymeleaf.context.Context;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
+
+    private final EmailService emailService;
+
+
+    private final RandomPasswordGenerator randomPasswordGenerator;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserMapper userMapper;
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, EmailService emailService, RandomPasswordGenerator randomPasswordGenerator, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.emailService = emailService;
+        this.randomPasswordGenerator = randomPasswordGenerator;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public AppUser createUser(CreateUserRequest createUserRequest) {
-        AppUser createdUser = userRepository.save(userMapper.toEntity(createUserRequest));
+        String userPassword = randomPasswordGenerator.generateSecurePassword(8);
+        AppUser createdUser = userRepository.save(userMapper.toEntity(createUserRequest, userPassword));
+        emailService.createUserMailSending(createUserRequest, userPassword);
+
         return createdUser;
     }
 
@@ -99,5 +123,19 @@ public class UserServiceImpl implements UserService {
         userButtonsResponse.setButtons(userButtons);
         return userButtonsResponse;
     }
+
+    @Override
+    public AppUser userChangePassword(Long userId, UserChangePasswordRequest userChangePasswordRequest) {
+        AppUser appUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(userChangePasswordRequest.getOldPassword(), appUser.getAppPassword())) {
+            throw new RuntimeException("Old Password is wrong");
+        }
+        appUser.setAppPassword(passwordEncoder.encode(userChangePasswordRequest.getNewPassword()));
+        userRepository.save(appUser);
+
+        return appUser;
+    }
+
 
 }
