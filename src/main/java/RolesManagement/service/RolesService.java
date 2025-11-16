@@ -3,6 +3,7 @@ package RolesManagement.service;
 import java.util.List;
 
 import RolesManagement.dto.request.CreateRoleRequest;
+import RolesManagement.dto.response.RoleButtonsResponse;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
@@ -21,6 +22,8 @@ public interface RolesService {
     RoleUsersResponse getRoleUsers(Long roleId);
 
     RolePagesResponse getRolePages(Long roleId);
+
+    RoleButtonsResponse getRoleButtons(Long roleId);
 
 }
 

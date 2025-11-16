@@ -13,6 +13,7 @@ public class RoleMapper {
         AppRole appRole = new AppRole();
         appRole.setRoleName(createRoleRequest.getRoleName());
         appRole.setDescription(createRoleRequest.getDescription());
+        appRole.setIsActive(createRoleRequest.getIsActive());
         appRole.setActionBy(createRoleRequest.getActionBy());
         appRole.setActionOn(Timestamp.from(Instant.now()));
         return appRole;
@@ -23,6 +24,7 @@ public class RoleMapper {
         appRole.setRoleId(roleId);
         appRole.setRoleName(createRoleRequest.getRoleName());
         appRole.setDescription(createRoleRequest.getDescription());
+        appRole.setIsActive(createRoleRequest.getIsActive());
         appRole.setActionBy(createRoleRequest.getActionBy());
         appRole.setActionOn(Timestamp.from(Instant.now()));
         return appRole;

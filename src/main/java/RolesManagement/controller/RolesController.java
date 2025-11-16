@@ -2,6 +2,7 @@ package RolesManagement.controller;
 
 import RolesManagement.dto.generic.ApiResponse;
 import RolesManagement.dto.request.CreateRoleRequest;
+import RolesManagement.dto.response.RoleButtonsResponse;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
@@ -61,4 +62,10 @@ public class RolesController {
         return ApiResponse.success(rolePagesResponse, "Role Pages Returned Successfully");
     }
 
+
+    @GetMapping("/{roleId}/buttons")
+    public ResponseEntity<ApiResponse<RoleButtonsResponse>> getRoleButtons(@PathVariable Long roleId){
+        RoleButtonsResponse roleButtonsResponse = rolesService.getRoleButtons(roleId);
+        return ApiResponse.success(roleButtonsResponse,"Role Buttons Returned Successfully");
+    }
 }

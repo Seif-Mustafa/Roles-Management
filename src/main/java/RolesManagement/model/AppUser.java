@@ -1,5 +1,6 @@
 package RolesManagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +20,10 @@ public class AppUser {
     @Column(name="user_id")
     private Long userId;
 
-    @Column(name="app_username")
+    @Column(name="app_username", unique = true,nullable = false)
     private String appUsername;
 
+    @JsonIgnore
     @Column(name="app_password")
     private String appPassword;
 

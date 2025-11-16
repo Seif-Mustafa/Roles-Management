@@ -2,6 +2,7 @@ package RolesManagement.controller;
 
 import java.util.List;
 
+import RolesManagement.dto.request.UserChangePasswordRequest;
 import RolesManagement.dto.response.UserButtonsResponse;
 import RolesManagement.dto.response.UserPagesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,12 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserButtonsResponse>> getUserButtons(@PathVariable Long userId) {
         UserButtonsResponse userButtonsResponse = userService.getUserButtons(userId);
         return ApiResponse.success(userButtonsResponse, "User Buttons Returned Successfully");
+    }
+
+    @PutMapping("/{userId}/change-password")
+    public ResponseEntity<ApiResponse<AppUser>> userChangePassword(@PathVariable Long userId,@RequestBody UserChangePasswordRequest userChangePasswordRequest){
+        AppUser appUser = userService.userChangePassword(userId, userChangePasswordRequest);
+        return ApiResponse.success(appUser,"Password Changed Successfully");
     }
 
 

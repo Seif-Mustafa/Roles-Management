@@ -2,6 +2,7 @@ package RolesManagement.service;
 
 import RolesManagement.dto.request.CreateUserRequest;
 import RolesManagement.dto.request.UpdateUserRequest;
+import RolesManagement.dto.request.UserChangePasswordRequest;
 import RolesManagement.dto.response.UserButtonsResponse;
 import RolesManagement.dto.response.UserPagesResponse;
 import RolesManagement.dto.response.UserRolesResponse;
@@ -29,4 +30,6 @@ public interface UserService {
     UserPagesResponse getUserPages(Long userId);
 
     UserButtonsResponse getUserButtons(Long userId);
+
+    AppUser userChangePassword(Long userId, UserChangePasswordRequest userChangePasswordRequest);
 }

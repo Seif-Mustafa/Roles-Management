@@ -24,5 +24,6 @@ public class UserRolesResponse {
         private Long roleId;
         private String roleName;
         private String description;
+        private char isActive;
     }
 }

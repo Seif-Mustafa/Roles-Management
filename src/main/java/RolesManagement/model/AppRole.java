@@ -24,6 +24,9 @@ public class AppRole {
     @Column(name="description")
     private String description;
 
+    @Column(name="is_active")
+    private char isActive;
+
     @Column(name="action_by")
     private Long actionBy;
 
