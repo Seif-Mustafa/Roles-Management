@@ -19,9 +19,6 @@ import RolesManagement.mapper.UserMapper;
 import RolesManagement.model.AppUser;
 import RolesManagement.repository.UserRepository;
 import RolesManagement.service.UserService;
-import org.thymeleaf.TemplateEngine;
-
-import org.thymeleaf.context.Context;
 
 @Service
 public class UserServiceImpl implements UserService {

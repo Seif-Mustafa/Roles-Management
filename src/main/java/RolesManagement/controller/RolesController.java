@@ -2,7 +2,9 @@ package RolesManagement.controller;
 
 import RolesManagement.dto.generic.ApiResponse;
 import RolesManagement.dto.request.CreateRoleRequest;
+import RolesManagement.dto.request.UpdateRoleDetailsRequest;
 import RolesManagement.dto.response.RoleButtonsResponse;
+import RolesManagement.dto.response.RoleDetailsResponse;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
@@ -28,7 +30,7 @@ public class RolesController {
 
     @GetMapping("/{roleId}")
     public ResponseEntity<ApiResponse<AppRole>> getRoleById(@PathVariable Long roleId) {
-        AppRole appRole = rolesService.getRole(roleId);
+        AppRole appRole = rolesService.getRoleById(roleId);
         return ApiResponse.success(appRole, "Role Returned Successfully");
     }
 
@@ -67,5 +69,18 @@ public class RolesController {
     public ResponseEntity<ApiResponse<RoleButtonsResponse>> getRoleButtons(@PathVariable Long roleId){
         RoleButtonsResponse roleButtonsResponse = rolesService.getRoleButtons(roleId);
         return ApiResponse.success(roleButtonsResponse,"Role Buttons Returned Successfully");
+    }
+
+    @GetMapping("/role-details/{roleId}")
+    public ResponseEntity<ApiResponse<RoleDetailsResponse>> getRoleDetails(@PathVariable Long roleId){
+        RoleDetailsResponse roleDetailsResponse = rolesService.getRoleDetails(roleId);
+        return ApiResponse.success(roleDetailsResponse,"Role Details Returned Successfully");
+    }
+
+    @PutMapping("/role-details/{roleId}")
+    public ResponseEntity<ApiResponse<RoleDetailsResponse>> saveRoleDetails(@PathVariable Long roleId, @RequestBody UpdateRoleDetailsRequest updateRoleDetailsRequest){
+        RoleDetailsResponse roleDetailsResponse = rolesService.saveRoleDetails(roleId,updateRoleDetailsRequest);
+
+        return ApiResponse.success(roleDetailsResponse,"Role Details Saved Successfully");
     }
 }

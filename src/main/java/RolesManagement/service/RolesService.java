@@ -3,7 +3,9 @@ package RolesManagement.service;
 import java.util.List;
 
 import RolesManagement.dto.request.CreateRoleRequest;
+import RolesManagement.dto.request.UpdateRoleDetailsRequest;
 import RolesManagement.dto.response.RoleButtonsResponse;
+import RolesManagement.dto.response.RoleDetailsResponse;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
@@ -11,7 +13,7 @@ import RolesManagement.model.AppRole;
 public interface RolesService {
     AppRole createRole(CreateRoleRequest createRoleRequest);
 
-    AppRole getRole(Long roleId);
+    AppRole getRoleById(Long roleId);
 
     AppRole updateRole(Long roleId, CreateRoleRequest createRoleRequest);
 
@@ -24,6 +26,10 @@ public interface RolesService {
     RolePagesResponse getRolePages(Long roleId);
 
     RoleButtonsResponse getRoleButtons(Long roleId);
+
+    RoleDetailsResponse getRoleDetails(Long roleId);
+
+    RoleDetailsResponse saveRoleDetails(Long roleId, UpdateRoleDetailsRequest updateRoleDetailsRequest);
 
 }
 

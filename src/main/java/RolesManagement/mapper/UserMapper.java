@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +31,8 @@ public class UserMapper {
         user.setAppPassword(hashedPassword);
         user.setEmail(dto.getEmail());
         user.setIsActive(dto.getIsActive());
-        user.setActionBy(dto.getActionBy());
-        user.setActionOn(Timestamp.from(Instant.now()));
+        user.setCreatedBy(dto.getActionBy());
+//        user.setActionOn(Timestamp.from(Instant.now()));
         return user;
     }
 
@@ -44,8 +42,8 @@ public class UserMapper {
         user.setAppUsername(dto.getAppUsername());
         user.setEmail(dto.getEmail());
         user.setIsActive(dto.getIsActive());
-        user.setActionBy(dto.getActionBy());
-        user.setActionOn(Timestamp.from(Instant.now()));
+        user.setModifiedBy(dto.getActionBy());
+//        user.setActionOn(Timestamp.from(Instant.now()));
         return user;
     }
 
@@ -60,7 +58,10 @@ public class UserMapper {
                 .map((page) -> new UserLoginResponse.PermittedPage(
                         page.getPageId(),
                         page.getPageName(),
+                        page.getResourceCode(),
+                        page.getParentPageId(),
                         page.getIsActive()
+
                 )).collect(Collectors.toList()));
 
         userLoginResponse.setButtons(userButtons.stream()
