@@ -1,7 +1,6 @@
 package RolesManagement.service.serviceImpl;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,7 +151,7 @@ public class RolesServiceImpl implements RolesService {
                         AppPageRoleId id = new AppPageRoleId(page.getPageId(),roleId);
                         AppPageRole apr = new AppPageRole();
                         apr.setId(id);
-                        apr.setActionBy(updateRoleDetailsRequest.getModifiedBy());
+                        apr.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
                         selectedPages.add(apr);
                     }
                 }
@@ -168,7 +167,7 @@ public class RolesServiceImpl implements RolesService {
                         AppButtonRoleId id = new AppButtonRoleId (button.getButtonId(),roleId);
                         AppButtonRole abr = new AppButtonRole();
                         abr.setId(id);
-                        abr.setActionBy(updateRoleDetailsRequest.getModifiedBy());
+                        abr.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
                         selectedButtons.add(abr);
                     }
                 }
@@ -186,7 +185,7 @@ public class RolesServiceImpl implements RolesService {
 
                         AppUserRole aur = new AppUserRole();
                         aur.setId(id);
-                        aur.setActionBy(updateRoleDetailsRequest.getModifiedBy());
+                        aur.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
                         selectedUsers.add(aur);
                     }
                 }

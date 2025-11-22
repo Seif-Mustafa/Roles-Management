@@ -1,13 +1,11 @@
 package RolesManagement.mapper;
 
+import org.springframework.stereotype.Component;
+
 import RolesManagement.dto.request.CreateButtonRoleRequest;
 import RolesManagement.dto.request.DeleteButtonRoleRequest;
 import RolesManagement.model.AppButtonRole;
 import RolesManagement.model.AppButtonRoleId;
-import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @Component
 public class ButtonRoleMapper {
@@ -18,8 +16,8 @@ public class ButtonRoleMapper {
         appButtonRoleId.setRoleId(createButtonRoleRequest.getRoleId());
         AppButtonRole appButtonRole = new AppButtonRole();
         appButtonRole.setId(appButtonRoleId);
-        appButtonRole.setActionBy(createButtonRoleRequest.getActionBy());
-        appButtonRole.setActionOn(Timestamp.from(Instant.now()));
+        appButtonRole.setCreatedBy(createButtonRoleRequest.getActionBy());
+        // appButtonRole.setActionOn(Timestamp.from(Instant.now()));
         return appButtonRole;
     }
 

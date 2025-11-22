@@ -1,13 +1,11 @@
 package RolesManagement.mapper;
 
+import org.springframework.stereotype.Component;
+
 import RolesManagement.dto.request.CreateUserRoleRequest;
 import RolesManagement.dto.request.DeleteUserRoleRequest;
 import RolesManagement.model.AppUserRole;
 import RolesManagement.model.AppUserRoleId;
-import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @Component
 public class UserRoleMapper {
@@ -18,8 +16,8 @@ public class UserRoleMapper {
         appUserRoleId.setUserId(createUserRoleRequest.getUserId());
         AppUserRole appUserRole = new AppUserRole();
         appUserRole.setId(appUserRoleId);
-        appUserRole.setActionBy(createUserRoleRequest.getActionBy());
-        appUserRole.setActionOn(Timestamp.from(Instant.now()));
+        appUserRole.setCreatedBy(createUserRoleRequest.getActionBy());
+        // appUserRole.setActionOn(Timestamp.from(Instant.now()));
         return appUserRole;
     }
 

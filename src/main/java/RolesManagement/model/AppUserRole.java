@@ -21,12 +21,12 @@ public class AppUserRole {
     @EmbeddedId
     private AppUserRoleId id;
 
-    @Column(name = "action_by")
-    private Long actionBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
     @CreationTimestamp
-    @Column(name = "action_on")
-    private Timestamp actionOn;
+    @Column(name = "created_on")
+    private Timestamp createdOn;
 
 
     public Long getUserId() {
