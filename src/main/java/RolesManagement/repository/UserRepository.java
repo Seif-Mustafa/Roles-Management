@@ -32,17 +32,22 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     List<UserRolesResponse.AppRoleResponse> getUserRoles(@Param("userId") Long userId);
 
     @Query("""
-            SELECT DISTINCT new RolesManagement.dto.response.UserPagesResponse$PageResponse(ap.pageId, ap.pageName, ap.isActive)
+            SELECT DISTINCT new RolesManagement.dto.response.UserPagesResponse$PageResponse(ap.pageId, ap.pageName, ap.resourceCode, ap.parentPageId ,ap.isActive)
             FROM AppPage ap
             JOIN AppPageRole apr ON ap.pageId = apr.id.pageId 
             JOIN AppUserRole aur ON aur.id.roleId = apr.id.roleId AND aur.id.userId = :userId
             """)
     List<UserPagesResponse.PageResponse> getUserPages(@Param("userId") Long userId);
 
-//    SELECT ab.button_id, ab.button_name, ab.page_id, ab.is_active
-//    FROM app_button ab
-//    JOIN app_button_role abr ON ab.button_id = abr.button_id
-//    JOIN app_user_role aur ON aur.user_id = 1 AND abr.role_id = aur.role_id
+    @Query("""
+            SELECT DISTINCT new RolesManagement.dto.response.UserPagesResponse$PageResponse(ap.pageId, ap.pageName, ap.resourceCode, ap.parentPageId ,ap.isActive)
+            FROM AppPage ap
+            JOIN AppPageRole apr ON ap.pageId = apr.id.pageId AND ap.isActive = 'Y'
+            JOIN AppUserRole aur ON aur.id.roleId = apr.id.roleId AND aur.id.userId = :userId
+            """)
+    List<UserPagesResponse.PageResponse> getUserActivePages(@Param("userId") Long userId);
+
+
     @Query("""
             SELECT DISTINCT new RolesManagement.dto.response.UserButtonsResponse$ButtonResponse(ab.buttonId, ab.buttonName, ab.pageId, ab.isActive)
             FROM AppButton ab
@@ -51,7 +56,13 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
             """)
     List<UserButtonsResponse.ButtonResponse> getUserButtons(@Param("userId") Long userId);
 
-
+    @Query("""
+            SELECT DISTINCT new RolesManagement.dto.response.UserButtonsResponse$ButtonResponse(ab.buttonId, ab.buttonName, ab.pageId, ab.isActive)
+            FROM AppButton ab
+            JOIN AppButtonRole abr ON ab.buttonId = abr.id.buttonId AND ab.isActive = 'Y'
+            JOIN AppUserRole aur ON aur.id.userId = :userId AND abr.id.roleId = aur.id.roleId
+            """)
+    List<UserButtonsResponse.ButtonResponse> getUserActiveButtons(@Param("userId") Long userId);
 
 
 }

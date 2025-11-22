@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -42,28 +40,31 @@ public class AuthServiceImpl implements AuthService {
         this.emailService = emailService;
     }
 
+    @Override
     public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
         AppUser appUser = userRepository.findByAppUsername(userLoginRequest.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(userLoginRequest.getPassword(), appUser.getAppPassword())) {
             throw new RuntimeException("Password is wrong");
+        } else if (appUser.getIsActive() == 'N') {
+            throw new RuntimeException("This account is inactive");
         }
 
-        List<UserPagesResponse.PageResponse> userPages = userRepository.getUserPages(appUser.getUserId());
+        List<UserPagesResponse.PageResponse> userPages = userRepository.getUserActivePages(appUser.getUserId());
 
-        List<UserButtonsResponse.ButtonResponse> userButtons = userRepository.getUserButtons(appUser.getUserId());
+        List<UserButtonsResponse.ButtonResponse> userButtons = userRepository.getUserActiveButtons(appUser.getUserId());
 
         return userMapper.toDto(appUser, userPages, userButtons);
     }
 
+    @Override
     public void forgetPassword(ForgetPasswordRequest forgetPasswordRequest) {
         AppUser appUser = userRepository.findByAppUsernameAndEmail(forgetPasswordRequest.getUsername(), forgetPasswordRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
 
         String newPassword = randomPasswordGenerator.generateSecurePassword(8);
 
         appUser.setAppPassword(passwordEncoder.encode(newPassword));
-        appUser.setActionBy(appUser.getUserId());
-        appUser.setActionOn(Timestamp.from(Instant.now()));
+        appUser.setModifiedBy(appUser.getUserId());
         userRepository.save(appUser);
         emailService.forgetPasswordMailSending(appUser.getEmail(), appUser.getAppUsername(), newPassword);
 

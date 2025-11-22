@@ -22,6 +22,8 @@ public class UserPagesResponse {
     public static class PageResponse{
         private Long pageId;
         private String pageName;
+        private String resourceCode;
+        private Long parentPageId;
         private char isActive;
     }
 }

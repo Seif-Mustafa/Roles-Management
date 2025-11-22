@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
@@ -12,30 +14,45 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="app_user")
+@Table(name = "app_user")
 public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name="app_username", unique = true,nullable = false)
+    @Column(name = "app_username", unique = true, nullable = false)
     private String appUsername;
 
     @JsonIgnore
-    @Column(name="app_password")
+    @Column(name = "app_password")
     private String appPassword;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private char isActive;
 
-    @Column(name="action_by")
-    private Long actionBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
-    @Column(name="action_on")
-    private Timestamp actionOn;
+    @CreationTimestamp
+    @Column(name = "created_on")
+    private Timestamp createdOn;
+
+    @Column(name = "modified_by")
+    private Long modifiedBy;
+
+    @UpdateTimestamp
+    @Column(name = "modified_on")
+    private Timestamp modifiedOn;
+
+
+//    @Column(name="action_by")
+//    private Long actionBy;
+//
+//    @Column(name="action_on")
+//    private Timestamp actionOn;
 }

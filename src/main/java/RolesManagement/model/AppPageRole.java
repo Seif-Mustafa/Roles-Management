@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +21,7 @@ public class AppPageRole {
     @Column(name = "action_by")
     private Long actionBy;
 
+    @CreationTimestamp
     @Column(name = "action_on")
     private Timestamp actionOn;
 

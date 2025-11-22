@@ -24,6 +24,8 @@ public class UserLoginResponse {
     public static class PermittedPage{
         private Long pageId;
         private String pageName;
+        private String resourceCode;
+        private Long parentPageId;
         private char isActive;
     }
     @Data
