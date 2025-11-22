@@ -1,13 +1,11 @@
 package RolesManagement.mapper;
 
+import org.springframework.stereotype.Component;
+
 import RolesManagement.dto.request.CreatePageRoleRequest;
 import RolesManagement.dto.request.DeletePageRoleRequest;
 import RolesManagement.model.AppPageRole;
 import RolesManagement.model.AppPageRoleId;
-import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @Component
 public class PageRoleMapper {
@@ -17,8 +15,8 @@ public class PageRoleMapper {
         appPageRoleId.setRoleId(createPageRoleRequest.getRoleId());
         AppPageRole appPageRole = new AppPageRole();
         appPageRole.setId(appPageRoleId);
-        appPageRole.setActionBy(createPageRoleRequest.getActionBy());
-        appPageRole.setActionOn(Timestamp.from(Instant.now()));
+        appPageRole.setCreatedBy(createPageRoleRequest.getActionBy());
+        // appPageRole.setActionOn(Timestamp.from(Instant.now()));
         return appPageRole;
     }
 

@@ -5,15 +5,19 @@
 ![Maven](https://img.shields.io/badge/Maven-4.0.0-brightgreen?logo=apachemaven)
 ![MySQL](https://img.shields.io/badge/MySQL-8.x-blue?logo=mysql)
 
-This project is a backend application developed using the Spring Boot framework to provide a robust system for user and role management. It exposes a set of RESTful endpoints to perform CRUD (Create, Read, Update, Delete) operations on users and their assigned roles. This serves as a foundational module for applications requiring role-based access control (RBAC).
+This project is a backend application developed using the Spring Boot framework to provide a robust and detailed system for role-based access control (RBAC). It goes beyond simple role management by allowing fine-grained control over permissions, associating roles with specific UI pages and buttons. The system exposes a set of RESTful endpoints to manage roles, their associated permissions (pages/buttons), and user assignments.
 
 ## Key Features
 
-*   **User Management**: Endpoints for creating, retrieving, updating, and deleting users.
-*   **Role Management**: Functionality to manage application roles (CRUD).
+*   **Advanced Role Management**: Full CRUD functionality for application roles.
+*   **Permission Management**: Ability to associate roles with specific application pages and buttons, enabling fine-grained access control.
+*   **User Assignment**: Assign and unassign users to roles.
+*   **Transactional Updates**: A dedicated endpoint (`/roles/{id}/details`) to save a role's information and all its associated pages, buttons, and users in a single, atomic transaction.
+*   **Detailed Views**: Endpoints to fetch comprehensive details for a role, including all assigned pages, buttons, and users.
 *   **Layered Architecture**: Follows a standard Controller-Service-Repository pattern for separation of concerns and maintainability.
 *   **Data Transfer Objects (DTOs)**: Utilizes DTOs and mappers to decouple the API layer from the data model.
 *   **JPA/Hibernate**: Leverages Spring Data JPA for simplified data access and persistence.
+*   **Email Notifications**: Asynchronous email sending capability is enabled (e.g., for user notifications).
 *   **Docker Support**: Includes a `docker-compose.yml` for easy setup of the MySQL database.
 
 ## Technology Stack
@@ -85,26 +89,20 @@ The base URL for the API is `http://localhost:8080/api`.
 
 ### Roles Management
 
-| Method | Endpoint          | Description              |
-| :----- | :---------------- | :----------------------- |
-| `GET`  | `/roles`          | Get all roles            |
-| `POST` | `/roles`          | Create a new role        |
-| `GET`  | `/roles/{id}`     | Get a role by its ID     |
-| `PUT`  | `/roles/{id}`     | Update an existing role  |
-| `DELETE`| `/roles/{id}`     | Delete a role by its ID  |
+| Method | Endpoint                | Description                                                               |
+| :----- | :---------------------- | :------------------------------------------------------------------------ |
+| `GET`  | `/roles`                | Get all roles                                                             |
+| `POST` | `/roles`                | Create a new role                                                         |
+| `GET`  | `/roles/{id}`           | Get a role by its ID                                                      |
+| `PUT`  | `/roles/{id}`           | Update an existing role's basic details                                   |
+| `DELETE`| `/roles/{id}`           | Delete a role by its ID                                                   |
+| `GET`  | `/roles/{id}/details`   | Get comprehensive details of a role (including pages, buttons, and users) |
+| `POST` | `/roles/{id}/details`   | Save all details for a role (info, pages, buttons, users) transactionally |
 
-### User Management
-
-| Method | Endpoint          | Description              |
-| :----- | :---------------- | :----------------------- |
-| `GET`  | `/users`          | Get all users            |
-| `POST` | `/users`          | Create a new user        |
-| `GET`  | `/users/{id}`     | Get a user by their ID   |
-| `PUT`  | `/users/{id}`     | Update an existing user  |
-| `DELETE`| `/users/{id}`     | Delete a user by their ID|
+*(Note: User management endpoints are part of the overall design but are not detailed here. The focus is on the core role and permission management.)*
 
 ## Database Schema
 
-*(This is a placeholder for you to add your schema image. You can drag and drop the image into the GitHub editor.)*
+*(This is a placeholder for you to add your schema image. You can drag and drop the image into the GitHub editor, or use a markdown image link.)*
 
-!Database Schema
+![Database Schema](src/main/resources/static/schema.png)
