@@ -10,8 +10,10 @@ import RolesManagement.model.AppUser;
 import RolesManagement.repository.UserRepository;
 import RolesManagement.service.AuthService;
 import RolesManagement.utils.EmailService;
+import RolesManagement.utils.JwtService;
 import RolesManagement.utils.RandomPasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +21,34 @@ import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+    @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     private final UserMapper userMapper;
 
+    @Autowired
     private final RandomPasswordGenerator randomPasswordGenerator;
 
+    @Autowired
     private final EmailService emailService;
 
     @Autowired
+    private JwtService jwtService;
+
+
     public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
                            UserMapper userMapper, RandomPasswordGenerator randomPasswordGenerator,
-                           EmailService emailService) {
+                           EmailService emailService, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.randomPasswordGenerator = randomPasswordGenerator;
         this.emailService = emailService;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -54,7 +65,9 @@ public class AuthServiceImpl implements AuthService {
 
         List<UserButtonsResponse.ButtonResponse> userButtons = userRepository.getUserActiveButtons(appUser.getUserId());
 
-        return userMapper.toDto(appUser, userPages, userButtons);
+        String token = jwtService.generateToken(appUser.getAppUsername());
+
+        return userMapper.toDto(appUser, userPages, userButtons,token);
     }
 
     @Override

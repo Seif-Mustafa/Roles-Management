@@ -48,12 +48,12 @@ public class UserMapper {
     }
 
 
-    public UserLoginResponse toDto(AppUser appUser, List<UserPagesResponse.PageResponse> userPages, List<UserButtonsResponse.ButtonResponse> userButtons) {
+    public UserLoginResponse toDto(AppUser appUser, List<UserPagesResponse.PageResponse> userPages, List<UserButtonsResponse.ButtonResponse> userButtons, String token) {
         UserLoginResponse userLoginResponse = new UserLoginResponse();
         userLoginResponse.setUserId(appUser.getUserId());
         userLoginResponse.setUsername(appUser.getAppUsername());
         userLoginResponse.setEmail(appUser.getEmail());
-
+        userLoginResponse.setToken(token);
         userLoginResponse.setPages(userPages.stream()
                 .map((page) -> new UserLoginResponse.PermittedPage(
                         page.getPageId(),

@@ -103,6 +103,4 @@ The base URL for the API is `http://localhost:8080/api`.
 
 ## Database Schema
 
-*(This is a placeholder for you to add your schema image. You can drag and drop the image into the GitHub editor, or use a markdown image link.)*
-
 ![Database Schema](src/main/resources/static/schema.png)
