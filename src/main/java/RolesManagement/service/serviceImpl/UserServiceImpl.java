@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser getUserById(Long userId) {
-        Optional<AppUser> user = userRepository.findById(userId);
-        return user.isPresent() ? user.get() : null;
+        AppUser user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
+        return user;
     }
 
 
