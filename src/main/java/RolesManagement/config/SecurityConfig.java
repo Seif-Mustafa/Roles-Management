@@ -1,14 +1,54 @@
 package RolesManagement.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import RolesManagement.filter.JwtAuthFilter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/login").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -16,48 +56,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // 1. Disable CSRF
-                .csrf(csrf -> csrf.disable())
-
-                // 2. Define authorization rules
-                .authorizeHttpRequests(auth -> auth
-
-                        // 3. THIS IS THE CHANGE:
-                        //    Permit all requests, regardless of endpoint
-                        .anyRequest().permitAll()
-                )
-
-                // 4. Disable the default login forms
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable());
-
-        return http.build();
-    }
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                // 1. Disable CSRF (common for stateless REST APIs)
-//                .csrf(csrf -> csrf.disable())
-//
-//                // 2. Define authorization rules
-//                .authorizeHttpRequests(auth -> auth
-//
-//                        // 3. Make your login and registration endpoints public
-//                        //    !!! IMPORTANT: REPLACE WITH YOUR ACTUAL API PATHS !!!
-////                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-//                        .requestMatchers("/*","/*/*").permitAll()
-//
-//                        // 4. Secure all other endpoints
-//                        .anyRequest().authenticated())
-//
-//                // 5. Disable the default Spring Security login form and basic auth
-//                //    You are building your own login logic.
-//                .formLogin(form -> form.disable()).httpBasic(basic -> basic.disable());
-//
-//        return http.build();
-//    }
 }

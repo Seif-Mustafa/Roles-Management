@@ -15,6 +15,7 @@ public class UserLoginResponse {
     private Long userId;
     private String username;
     private String email;
+    private String token;
     private List<PermittedPage> pages;
     private List<PermittedButton> buttons;
 
