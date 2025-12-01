@@ -2,11 +2,14 @@ package RolesManagement.mapper;
 
 import RolesManagement.dto.request.CreateUserRequest;
 import RolesManagement.dto.request.UpdateUserRequest;
+import RolesManagement.dto.request.user.UpdateUserDetailsRequest;
 import RolesManagement.dto.response.UserButtonsResponse;
 import RolesManagement.dto.response.UserLoginResponse;
 import RolesManagement.dto.response.UserPagesResponse;
+import RolesManagement.dto.response.user.UserDetailsResponse;
 import RolesManagement.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -74,5 +77,17 @@ public class UserMapper {
 
         return userLoginResponse;
     }
+
+    public UserDetailsResponse toDto(AppUser appUser, List<UserDetailsResponse.UserRole> userRoles) {
+        return UserDetailsResponse.builder()
+                .userId(appUser.getUserId())
+                .username(appUser.getAppUsername())
+                .email(appUser.getEmail())
+                .isActive(appUser.getIsActive())
+                .roles(userRoles)
+                .build();
+    }
+
+
 }
 

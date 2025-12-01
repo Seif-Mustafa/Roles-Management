@@ -17,4 +17,9 @@ public interface UserRoleRepository extends JpaRepository<AppUserRole, AppUserRo
     @Transactional
     @Query("DELETE FROM AppUserRole aur WHERE aur.id.roleId = :roleId")
     void deleteAllByRoleId(@Param("roleId") Long roleId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM AppUserRole aur WHERE aur.id.userId = :userId")
+    void deleteAllByUserId(@Param("userId") Long userId);
 }
