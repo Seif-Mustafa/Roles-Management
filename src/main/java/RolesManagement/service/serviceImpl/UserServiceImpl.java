@@ -1,12 +1,21 @@
 package RolesManagement.service.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import RolesManagement.dto.request.UserChangePasswordRequest;
+import RolesManagement.dto.request.user.UpdateUserDetailsRequest;
+import RolesManagement.dto.response.user.UserDetailsResponse;
+import RolesManagement.model.AppUserRole;
+import RolesManagement.model.AppUserRoleId;
+import RolesManagement.repository.UserRoleRepository;
 import RolesManagement.utils.EmailService;
 import RolesManagement.utils.RandomPasswordGenerator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +38,23 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
-
     private final RandomPasswordGenerator randomPasswordGenerator;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, EmailService emailService, RandomPasswordGenerator randomPasswordGenerator, PasswordEncoder passwordEncoder) {
+    private final UserRoleRepository userRoleRepository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper,
+                           EmailService emailService, RandomPasswordGenerator randomPasswordGenerator,
+                           PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.emailService = emailService;
         this.randomPasswordGenerator = randomPasswordGenerator;
         this.passwordEncoder = passwordEncoder;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -54,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser getUserById(Long userId) {
-        AppUser user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
+        AppUser user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return user;
     }
 
@@ -79,6 +93,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    public Page<AppUser> getAllUsersPagination(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+
     public List<AppUser> getActiveUsers() {
         return userRepository.findByIsActive('Y');
     }
@@ -89,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRolesResponse getUserRoles(Long userId) {
-        AppUser appUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        AppUser appUser = getUserById(userId);
         List<UserRolesResponse.AppRoleResponse> roles = userRepository.getUserRoles(userId);
         UserRolesResponse userRolesResponse = new UserRolesResponse();
         userRolesResponse.setUserId(appUser.getUserId());
@@ -101,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserPagesResponse getUserPages(Long userId) {
-        AppUser appUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        AppUser appUser = getUserById(userId);
         List<UserPagesResponse.PageResponse> userPages = userRepository.getUserPages(userId);
         UserPagesResponse userPagesResponse = new UserPagesResponse();
         userPagesResponse.setUserId(appUser.getUserId());
@@ -112,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserButtonsResponse getUserButtons(Long userId) {
-        AppUser appUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        AppUser appUser = getUserById(userId);
         List<UserButtonsResponse.ButtonResponse> userButtons = userRepository.getUserButtons(userId);
         UserButtonsResponse userButtonsResponse = new UserButtonsResponse();
         userButtonsResponse.setUserId(appUser.getUserId());
@@ -123,7 +142,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser userChangePassword(Long userId, UserChangePasswordRequest userChangePasswordRequest) {
-        AppUser appUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        AppUser appUser = getUserById(userId);
 
         if (!passwordEncoder.matches(userChangePasswordRequest.getOldPassword(), appUser.getAppPassword())) {
             throw new RuntimeException("Old Password is wrong");
@@ -134,5 +153,39 @@ public class UserServiceImpl implements UserService {
         return appUser;
     }
 
+    @Override
+    public UserDetailsResponse getUserDetails(Long userId) {
+        AppUser appUser = getUserById(userId);
+        List<UserDetailsResponse.UserRole> userRoles = userRepository.getAllRolesByUserId(userId);
+
+        return userMapper.toDto(appUser, userRoles);
+    }
+
+    @Override
+    @Transactional
+    public UserDetailsResponse saveUserDetails(Long userId, UpdateUserDetailsRequest updateUserDetailsRequest) {
+        AppUser appUser = getUserById(userId);
+        appUser.setAppUsername(updateUserDetailsRequest.getUsername());
+        appUser.setEmail(updateUserDetailsRequest.getEmail());
+        appUser.setIsActive(updateUserDetailsRequest.getIsActive());
+        appUser.setModifiedBy(updateUserDetailsRequest.getModifiedBy());
+        // Saving User
+        userRepository.save(appUser);
+
+        userRoleRepository.deleteAllByUserId(userId);
+        List<AppUserRole> selectedRoles = new ArrayList<>();
+        updateUserDetailsRequest.getRoles().forEach((role) -> {
+            if (role.getIsSelected() == 'Y') {
+                AppUserRoleId appUserRoleId = new AppUserRoleId(userId, role.getRoleId());
+                AppUserRole appUserRole = new AppUserRole();
+                appUserRole.setId(appUserRoleId);
+                appUserRole.setCreatedBy(updateUserDetailsRequest.getModifiedBy());
+                selectedRoles.add(appUserRole);
+            }
+        });
+        userRoleRepository.saveAll(selectedRoles);
+
+        return getUserDetails(userId);
+    }
 
 }

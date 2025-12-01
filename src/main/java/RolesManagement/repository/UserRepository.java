@@ -3,6 +3,7 @@ package RolesManagement.repository;
 import RolesManagement.dto.response.UserButtonsResponse;
 import RolesManagement.dto.response.UserPagesResponse;
 import RolesManagement.dto.response.UserRolesResponse;
+import RolesManagement.dto.response.user.UserDetailsResponse;
 import RolesManagement.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -64,5 +65,13 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
             """)
     List<UserButtonsResponse.ButtonResponse> getUserActiveButtons(@Param("userId") Long userId);
 
+
+    @Query("""
+            SELECT new RolesManagement.dto.response.user.UserDetailsResponse$UserRole(ar.roleId, ar.roleName, ar.description, ar.isActive,
+            CASE WHEN aur.id.userId IS NOT NULL THEN 'Y' ELSE 'N' END)
+            FROM AppRole ar
+            LEFT JOIN AppUserRole aur ON ar.roleId = aur.id.roleId AND aur.id.userId = :userId
+            """)
+    List<UserDetailsResponse.UserRole> getAllRolesByUserId(@Param("userId") Long userId);
 
 }

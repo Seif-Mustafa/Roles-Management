@@ -3,9 +3,15 @@ package RolesManagement.controller;
 import java.util.List;
 
 import RolesManagement.dto.request.UserChangePasswordRequest;
+import RolesManagement.dto.request.user.UpdateUserDetailsRequest;
 import RolesManagement.dto.response.UserButtonsResponse;
 import RolesManagement.dto.response.UserPagesResponse;
+import RolesManagement.dto.response.user.UserDetailsResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +65,11 @@ public class UserController {
         return ApiResponse.success(userService.getAllUsers(), "Users Returned Successfully");
     }
 
+    @GetMapping("/pagination")
+    public ResponseEntity<ApiResponse<Page<AppUser>>> getAllUsersPagination(@PageableDefault(page=0,size=5, sort="userId") Pageable pageable) {
+        return ApiResponse.success(userService.getAllUsersPagination(pageable), "Paginated Users Returned Successfully");
+    }
+
     @GetMapping("/active")
     public ResponseEntity<ApiResponse<List<AppUser>>> getActiveUsers() {
         return ApiResponse.success(userService.getActiveUsers(), "Active Users Returned Successfully");
@@ -90,10 +101,22 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/change-password")
-    public ResponseEntity<ApiResponse<AppUser>> userChangePassword(@PathVariable Long userId,@RequestBody UserChangePasswordRequest userChangePasswordRequest){
+    public ResponseEntity<ApiResponse<AppUser>> userChangePassword(@PathVariable Long userId, @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
         AppUser appUser = userService.userChangePassword(userId, userChangePasswordRequest);
-        return ApiResponse.success(appUser,"Password Changed Successfully");
+        return ApiResponse.success(appUser, "Password Changed Successfully");
     }
 
+    @GetMapping("/user-details/{userId}")
+    public ResponseEntity<ApiResponse<UserDetailsResponse>> getUserDetails(@PathVariable Long userId) {
+        UserDetailsResponse userDetailsResponse = userService.getUserDetails(userId);
+        return ApiResponse.success(userDetailsResponse, "User Details Returned Successfully");
+    }
+
+    @PutMapping("/user-details/{userId}")
+    public ResponseEntity<ApiResponse<UserDetailsResponse>> saveUserDetails(@PathVariable Long userId,@Valid @RequestBody UpdateUserDetailsRequest updateUserDetailsRequest){
+        UserDetailsResponse userDetailsResponse = userService.saveUserDetails(userId, updateUserDetailsRequest);
+
+        return ApiResponse.success(userDetailsResponse, "User Details Saved Successfully");
+    }
 
 }
