@@ -97,6 +97,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable);
     }
 
+    @Override
+    public Page<AppUser> getUsersPaginationFiltering(String filter, Pageable pageable){
+        return userRepository.findUsersPaginationFiltering(filter,pageable);
+    }
+
 
     public List<AppUser> getActiveUsers() {
         return userRepository.findByIsActive('Y');

@@ -5,6 +5,8 @@ import RolesManagement.dto.response.UserPagesResponse;
 import RolesManagement.dto.response.UserRolesResponse;
 import RolesManagement.dto.response.user.UserDetailsResponse;
 import RolesManagement.model.AppUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,13 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<AppUser, Long> {
+
+    @Query("""
+            SELECT au FROM AppUser au
+            WHERE LOWER(au.appUsername) LIKE LOWER(CONCAT('%',:filter,'%'))
+            OR LOWER(au.email) LIKE LOWER(CONCAT('%',:filter,'%'))
+            """)
+    Page<AppUser> findUsersPaginationFiltering(@Param("filter") String filter, Pageable pageable);
 
     List<AppUser> findByIsActive(char status);
 

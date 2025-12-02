@@ -27,6 +27,8 @@ public interface UserService {
 
     Page<AppUser> getAllUsersPagination(Pageable pageable);
 
+    Page<AppUser> getUsersPaginationFiltering(String filter, Pageable pageable);
+
     List<AppUser> getActiveUsers();
 
     List<AppUser> getInActiveUsers();

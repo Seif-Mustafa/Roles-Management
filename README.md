@@ -19,6 +19,7 @@ This project is a backend application developed using the Spring Boot framework 
 *   **JPA/Hibernate**: Leverages Spring Data JPA for simplified data access and persistence.
 *   **Email Notifications**: Asynchronous email sending capability is enabled (e.g., for user notifications).
 *   **Docker Support**: Includes a `docker-compose.yml` for easy setup of the MySQL database.
+*   **Production Docker Setup**: Includes a `docker-compose-prod.yml` to run both the application and database in containers.
 
 ## Technology Stack
 
@@ -60,11 +61,11 @@ To get a local copy up and running, follow these simple steps.
 
     This is the easiest way to get the database running. Make sure you have Docker installed and running on your machine.
 
-    From the root of the project directory, run:
+    From the root of the project directory, run the following command to start only the database:
     ```sh
-    docker-compose up -d
+    docker-compose -f docker-compose-prod.yml up -d db
     ```
-    This will start a MySQL container with all the necessary configurations. The database will be accessible on port `3307`. The `application.properties` file is already configured to connect to this instance.
+    This will start a MySQL container with all the necessary configurations. The database will be accessible on port `3307`. The `application.properties` file is already configured to connect to this Dockerized instance.
 
     **Option 2: Manual MySQL Setup**
 
@@ -82,6 +83,20 @@ To get a local copy up and running, follow these simple steps.
     ./mvnw spring-boot:run
     ```
     The application will start on the default port `8080` with the context path `/api`.
+
+5.  **Running with Docker Compose (Alternative):**
+
+    If you want to run both the application and the database in Docker containers, you can use the `docker-compose-prod.yml` file. This is ideal for a production-like setup.
+
+    First, build the application's JAR file:
+    ```sh
+    ./mvnw clean package
+    ```
+    Then, run Docker Compose:
+    ```sh
+    docker-compose -f docker-compose-prod.yml up --build -d
+    ```
+    This will build the application's Docker image and start both the `app` and `db` services. The application will be available at `http://localhost:8080/api`.
 
 ## API Endpoints
 
