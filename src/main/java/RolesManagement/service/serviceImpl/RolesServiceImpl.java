@@ -13,6 +13,8 @@ import RolesManagement.repository.PageRoleRepository;
 import RolesManagement.repository.UserRoleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import RolesManagement.dto.request.CreateRoleRequest;
@@ -84,6 +86,17 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
+    public Page<AppRole> getAllRolesPagination(Pageable pageable) {
+        return rolesRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<AppRole> getRolesPaginationFiltering(Pageable pageable, String filter) {
+        return rolesRepository.findRolesPaginationFiltering(filter, pageable);
+    }
+
+
+    @Override
     public RoleUsersResponse getRoleUsers(Long roleId) {
         AppRole appRole = getRoleById(roleId);
 
@@ -148,7 +161,7 @@ public class RolesServiceImpl implements RolesService {
         updateRoleDetailsRequest.getPages().forEach(
                 (page) -> {
                     if (page.getIsSelected() == 'Y') {
-                        AppPageRoleId id = new AppPageRoleId(page.getPageId(),roleId);
+                        AppPageRoleId id = new AppPageRoleId(page.getPageId(), roleId);
                         AppPageRole apr = new AppPageRole();
                         apr.setId(id);
                         apr.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
@@ -164,7 +177,7 @@ public class RolesServiceImpl implements RolesService {
         updateRoleDetailsRequest.getButtons().forEach(
                 (button) -> {
                     if (button.getIsSelected() == 'Y') {
-                        AppButtonRoleId id = new AppButtonRoleId (button.getButtonId(),roleId);
+                        AppButtonRoleId id = new AppButtonRoleId(button.getButtonId(), roleId);
                         AppButtonRole abr = new AppButtonRole();
                         abr.setId(id);
                         abr.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
@@ -181,7 +194,7 @@ public class RolesServiceImpl implements RolesService {
         updateRoleDetailsRequest.getUsers().forEach(
                 (user) -> {
                     if (user.getIsSelected() == 'Y') {
-                        AppUserRoleId id = new AppUserRoleId( user.getUserId(),roleId);
+                        AppUserRoleId id = new AppUserRoleId(user.getUserId(), roleId);
 
                         AppUserRole aur = new AppUserRole();
                         aur.setId(id);

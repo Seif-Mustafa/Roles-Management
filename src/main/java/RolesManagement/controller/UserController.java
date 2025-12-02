@@ -13,14 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import RolesManagement.dto.generic.ApiResponse;
 import RolesManagement.dto.request.CreateUserRequest;
@@ -66,8 +59,16 @@ public class UserController {
     }
 
     @GetMapping("/pagination")
-    public ResponseEntity<ApiResponse<Page<AppUser>>> getAllUsersPagination(@PageableDefault(page=0,size=5, sort="userId") Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<AppUser>>> getAllUsersPagination(@PageableDefault(page = 0, size = 5, sort = "userId") Pageable pageable) {
         return ApiResponse.success(userService.getAllUsersPagination(pageable), "Paginated Users Returned Successfully");
+    }
+
+    @GetMapping("/pagination-filter")
+    public ResponseEntity<ApiResponse<Page<AppUser>>> getUsersPaginationFiltering(
+            @PageableDefault(page = 0, size = 5, sort = "userId") Pageable pageable,
+            @RequestParam String filter
+    ) {
+        return ApiResponse.success(userService.getUsersPaginationFiltering(filter, pageable), "Pagination Filtering Returned Successfully");
     }
 
     @GetMapping("/active")
@@ -113,7 +114,7 @@ public class UserController {
     }
 
     @PutMapping("/user-details/{userId}")
-    public ResponseEntity<ApiResponse<UserDetailsResponse>> saveUserDetails(@PathVariable Long userId,@Valid @RequestBody UpdateUserDetailsRequest updateUserDetailsRequest){
+    public ResponseEntity<ApiResponse<UserDetailsResponse>> saveUserDetails(@PathVariable Long userId, @Valid @RequestBody UpdateUserDetailsRequest updateUserDetailsRequest) {
         UserDetailsResponse userDetailsResponse = userService.saveUserDetails(userId, updateUserDetailsRequest);
 
         return ApiResponse.success(userDetailsResponse, "User Details Saved Successfully");

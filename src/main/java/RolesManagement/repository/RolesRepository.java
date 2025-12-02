@@ -3,6 +3,9 @@ package RolesManagement.repository;
 
 import java.util.List;
 
+import RolesManagement.model.AppUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +19,14 @@ import RolesManagement.model.AppRole;
 
 @Repository
 public interface RolesRepository extends JpaRepository<AppRole, Long> {
+
+
+    @Query("""
+            SELECT ar FROM AppRole ar
+            WHERE LOWER(ar.roleName) LIKE LOWER(CONCAT('%', :filter, '%')) 
+            OR LOWER(ar.description) LIKE LOWER(CONCAT('%', :filter, '%'))
+            """)
+    Page<AppRole> findRolesPaginationFiltering(@Param("filter") String filter, Pageable pageable);
 
     @Query("""
             SELECT new RolesManagement.dto.response.RoleUsersResponse$UserResponse(au.userId, au.appUsername, au.isActive)

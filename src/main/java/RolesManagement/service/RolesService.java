@@ -9,6 +9,8 @@ import RolesManagement.dto.response.RoleDetailsResponse;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface RolesService {
     AppRole createRole(CreateRoleRequest createRoleRequest);
@@ -20,6 +22,10 @@ public interface RolesService {
     AppRole deleteRole(Long roleId);
 
     List<AppRole> getAllRoles();
+
+    Page<AppRole> getAllRolesPagination(Pageable pageable);
+
+    Page<AppRole> getRolesPaginationFiltering(Pageable pageable, String filter);
 
     RoleUsersResponse getRoleUsers(Long roleId);
 

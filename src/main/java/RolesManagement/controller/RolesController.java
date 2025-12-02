@@ -8,8 +8,13 @@ import RolesManagement.dto.response.RoleDetailsResponse;
 import RolesManagement.dto.response.RolePagesResponse;
 import RolesManagement.dto.response.RoleUsersResponse;
 import RolesManagement.model.AppRole;
+import RolesManagement.model.AppUser;
 import RolesManagement.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +57,24 @@ public class RolesController {
         return ApiResponse.success(allRoles, "All Roles Returned Successfully");
     }
 
+    @GetMapping("/pagination")
+    public ResponseEntity<ApiResponse<Page<AppRole>>> getAllRolesPagination(
+            @PageableDefault(page = 0, size = 5, sort = "roleId", direction = Sort.Direction.ASC) Pageable pageable
+    ) {
+        Page<AppRole> appRolePage = rolesService.getAllRolesPagination(pageable);
+
+        return ApiResponse.success(appRolePage, "Paginated Roles Returned Successfully");
+    }
+
+    @GetMapping("/pagination-filter")
+    public ResponseEntity<ApiResponse<Page<AppRole>>> getRolesPaginationFiltering(
+            @PageableDefault(page = 0, size = 5, sort = "roleId") Pageable pageable,
+            @RequestParam("filter") String filter
+    ) {
+        return ApiResponse.success(rolesService.getRolesPaginationFiltering(pageable,filter), "Paginated Filtering Returned Successfully");
+    }
+
+
     @GetMapping("/{roleId}/users")
     public ResponseEntity<ApiResponse<RoleUsersResponse>> getRoleUsers(@PathVariable Long roleId) {
         RoleUsersResponse roleUsersResponse = rolesService.getRoleUsers(roleId);
@@ -66,21 +89,21 @@ public class RolesController {
 
 
     @GetMapping("/{roleId}/buttons")
-    public ResponseEntity<ApiResponse<RoleButtonsResponse>> getRoleButtons(@PathVariable Long roleId){
+    public ResponseEntity<ApiResponse<RoleButtonsResponse>> getRoleButtons(@PathVariable Long roleId) {
         RoleButtonsResponse roleButtonsResponse = rolesService.getRoleButtons(roleId);
-        return ApiResponse.success(roleButtonsResponse,"Role Buttons Returned Successfully");
+        return ApiResponse.success(roleButtonsResponse, "Role Buttons Returned Successfully");
     }
 
     @GetMapping("/role-details/{roleId}")
-    public ResponseEntity<ApiResponse<RoleDetailsResponse>> getRoleDetails(@PathVariable Long roleId){
+    public ResponseEntity<ApiResponse<RoleDetailsResponse>> getRoleDetails(@PathVariable Long roleId) {
         RoleDetailsResponse roleDetailsResponse = rolesService.getRoleDetails(roleId);
-        return ApiResponse.success(roleDetailsResponse,"Role Details Returned Successfully");
+        return ApiResponse.success(roleDetailsResponse, "Role Details Returned Successfully");
     }
 
     @PutMapping("/role-details/{roleId}")
-    public ResponseEntity<ApiResponse<RoleDetailsResponse>> saveRoleDetails(@PathVariable Long roleId, @RequestBody UpdateRoleDetailsRequest updateRoleDetailsRequest){
-        RoleDetailsResponse roleDetailsResponse = rolesService.saveRoleDetails(roleId,updateRoleDetailsRequest);
+    public ResponseEntity<ApiResponse<RoleDetailsResponse>> saveRoleDetails(@PathVariable Long roleId, @RequestBody UpdateRoleDetailsRequest updateRoleDetailsRequest) {
+        RoleDetailsResponse roleDetailsResponse = rolesService.saveRoleDetails(roleId, updateRoleDetailsRequest);
 
-        return ApiResponse.success(roleDetailsResponse,"Role Details Saved Successfully");
+        return ApiResponse.success(roleDetailsResponse, "Role Details Saved Successfully");
     }
 }
