@@ -19,7 +19,7 @@ public class UpdateRoleDetailsRequest {
     private Long modifiedBy;
     private List<RoleDetailsPage> pages;
     private List<RoleDetailsButton> buttons;
-    private List<RoleDetailsUser> users;
+//    private List<RoleDetailsUser> users;
 
 
     @Data
@@ -39,13 +39,13 @@ public class UpdateRoleDetailsRequest {
 
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class RoleDetailsUser {
-        private Long userId;
-        private char isSelected;
-
-    }
+//    @Data
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    public static class RoleDetailsUser {
+//        private Long userId;
+//        private char isSelected;
+//
+//    }
 
 }

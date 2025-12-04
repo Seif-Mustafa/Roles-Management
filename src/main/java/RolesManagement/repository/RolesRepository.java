@@ -75,7 +75,7 @@ public interface RolesRepository extends JpaRepository<AppRole, Long> {
             au.userId, au.appUsername, au.isActive,
             CASE WHEN aur.id.roleId IS NOT NULL THEN 'Y' ELSE 'N' END)
             FROM AppUser au
-            LEFT JOIN AppUserRole aur ON au.userId = aur.id.userId AND aur.id.roleId = :roleId
+            JOIN AppUserRole aur ON au.userId = aur.id.userId AND aur.id.roleId = :roleId
             """)
 
     List<RoleDetailsResponse.RoleDetailsUser> getAllUsersByRoleId(@Param("roleId") Long roleId);

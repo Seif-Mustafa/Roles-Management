@@ -29,16 +29,7 @@ public class RoleMapper {
         return appRole;
     }
 
-    public AppRole toEntity(Long roleId, UpdateRoleDetailsRequest updateRoleDetailsRequest){
-        // Updating role
-        AppRole appRole = new AppRole();
-        appRole.setRoleId(roleId);
-        appRole.setRoleName(updateRoleDetailsRequest.getRoleName());
-        appRole.setDescription(updateRoleDetailsRequest.getRoleDescription());
-        appRole.setIsActive(updateRoleDetailsRequest.getIsActive());
-        appRole.setModifiedBy(updateRoleDetailsRequest.getModifiedBy());
-        return appRole;
-    }
+
 
     public RoleDetailsResponse toDto(AppRole appRole, List<RoleDetailsResponse.RoleDetailsPage> pages, List<RoleDetailsResponse.RoleDetailsButton> buttons, List<RoleDetailsResponse.RoleDetailsUser> users){
        return RoleDetailsResponse
