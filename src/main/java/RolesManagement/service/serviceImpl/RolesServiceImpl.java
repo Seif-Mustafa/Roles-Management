@@ -151,8 +151,12 @@ public class RolesServiceImpl implements RolesService {
     @Transactional
     public RoleDetailsResponse saveRoleDetails(Long roleId, UpdateRoleDetailsRequest updateRoleDetailsRequest) {
         AppRole appRole = getRoleById(roleId); // Validating that role exists
+        appRole.setRoleName(updateRoleDetailsRequest.getRoleName());
+        appRole.setDescription(updateRoleDetailsRequest.getRoleDescription());
+        appRole.setIsActive(updateRoleDetailsRequest.getIsActive());
+        appRole.setModifiedBy(updateRoleDetailsRequest.getModifiedBy());
         // Saving role
-        rolesRepository.save(roleMapper.toEntity(roleId, updateRoleDetailsRequest));
+        rolesRepository.save(appRole);
 
         // Saving Pages
         pageRoleRepository.deleteAllByRoleId(roleId);
@@ -187,24 +191,24 @@ public class RolesServiceImpl implements RolesService {
         );
         buttonRoleRepository.saveAll(selectedButtons);
 
-        // Saving Users
-        userRoleRepository.deleteAllByRoleId(roleId);
-        List<AppUserRole> selectedUsers = new ArrayList<>();
+//        // Saving Users
+//        userRoleRepository.deleteAllByRoleId(roleId);
+//        List<AppUserRole> selectedUsers = new ArrayList<>();
+//
+//        updateRoleDetailsRequest.getUsers().forEach(
+//                (user) -> {
+//                    if (user.getIsSelected() == 'Y') {
+//                        AppUserRoleId id = new AppUserRoleId(user.getUserId(), roleId);
+//
+//                        AppUserRole aur = new AppUserRole();
+//                        aur.setId(id);
+//                        aur.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
+//                        selectedUsers.add(aur);
+//                    }
+//                }
+//        );
 
-        updateRoleDetailsRequest.getUsers().forEach(
-                (user) -> {
-                    if (user.getIsSelected() == 'Y') {
-                        AppUserRoleId id = new AppUserRoleId(user.getUserId(), roleId);
-
-                        AppUserRole aur = new AppUserRole();
-                        aur.setId(id);
-                        aur.setCreatedBy(updateRoleDetailsRequest.getModifiedBy());
-                        selectedUsers.add(aur);
-                    }
-                }
-        );
-
-        userRoleRepository.saveAll(selectedUsers);
+//        userRoleRepository.saveAll(selectedUsers);
 
         return getRoleDetails(roleId);
     }

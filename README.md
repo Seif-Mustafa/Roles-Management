@@ -10,12 +10,14 @@ This project is a backend application developed using the Spring Boot framework 
 ## Key Features
 
 *   **Advanced Role Management**: Full CRUD functionality for application roles.
-*   **Permission Management**: Ability to associate roles with specific application pages and buttons, enabling fine-grained access control.
+*   **Fine-Grained Permission Management**: Associate roles with specific application pages and buttons for granular access control.
 *   **User Assignment**: Assign and unassign users to roles.
 *   **Transactional Updates**: A dedicated endpoint (`/roles/{id}/details`) to save a role's information and all its associated pages, buttons, and users in a single, atomic transaction.
 *   **Detailed Views**: Endpoints to fetch comprehensive details for a role, including all assigned pages, buttons, and users.
 *   **Layered Architecture**: Follows a standard Controller-Service-Repository pattern for separation of concerns and maintainability.
 *   **Data Transfer Objects (DTOs)**: Utilizes DTOs and mappers to decouple the API layer from the data model.
+*   **API-First Design**: The application is designed with a clear separation between the API and the backend logic.
+*   **Configuration Management**: Centralized application configuration using `application.properties` for different environments.
 *   **JPA/Hibernate**: Leverages Spring Data JPA for simplified data access and persistence.
 *   **Email Notifications**: Asynchronous email sending capability is enabled (e.g., for user notifications).
 *   **Docker Support**: Includes a `docker-compose.yml` for easy setup of the MySQL database.
@@ -27,6 +29,7 @@ This project is a backend application developed using the Spring Boot framework 
 *   **Spring Boot 3**: Framework for building the application.
 *   **Spring Data JPA**: For data persistence with JPA/Hibernate.
 *   **Maven**: Dependency Management.
+*   **MapStruct**: For mapping between DTOs and entities.
 *   **MySQL**: Relational Database.
 *   **Lombok**: To reduce boilerplate code.
 *   **Docker**: For containerizing the database.
@@ -63,7 +66,7 @@ To get a local copy up and running, follow these simple steps.
 
     From the root of the project directory, run the following command to start only the database:
     ```sh
-    docker-compose -f docker-compose-prod.yml up -d db
+    docker-compose -f docker-compose-prod.yml up -d db # Use -prod.yml for consistency
     ```
     This will start a MySQL container with all the necessary configurations. The database will be accessible on port `3307`. The `application.properties` file is already configured to connect to this Dockerized instance.
 
@@ -85,7 +88,7 @@ To get a local copy up and running, follow these simple steps.
     The application will start on the default port `8080` with the context path `/api`.
 
 5.  **Running with Docker Compose (Alternative):**
-
+    
     If you want to run both the application and the database in Docker containers, you can use the `docker-compose-prod.yml` file. This is ideal for a production-like setup.
 
     First, build the application's JAR file:
@@ -104,15 +107,15 @@ The base URL for the API is `http://localhost:8080/api`.
 
 ### Roles Management
 
-| Method | Endpoint                | Description                                                               |
-| :----- | :---------------------- | :------------------------------------------------------------------------ |
-| `GET`  | `/roles`                | Get all roles                                                             |
-| `POST` | `/roles`                | Create a new role                                                         |
-| `GET`  | `/roles/{id}`           | Get a role by its ID                                                      |
-| `PUT`  | `/roles/{id}`           | Update an existing role's basic details                                   |
-| `DELETE`| `/roles/{id}`           | Delete a role by its ID                                                   |
-| `GET`  | `/roles/{id}/details`   | Get comprehensive details of a role (including pages, buttons, and users) |
-| `POST` | `/roles/{id}/details`   | Save all details for a role (info, pages, buttons, users) transactionally |
+| Method | Endpoint                | Description                                                                 |
+| :----- | :---------------------- | :-------------------------------------------------------------------------- |
+| `GET`    | `/roles`                | Get all roles.                                                              |
+| `POST`   | `/roles`                | Create a new role.                                                          |
+| `GET`    | `/roles/{id}`           | Get a role by its ID.                                                       |
+| `PUT`    | `/roles/{id}`           | Update an existing role's basic details.                                    |
+| `DELETE` | `/roles/{id}`           | Delete a role by its ID.                                                    |
+| `GET`    | `/roles/{id}/details`   | Get comprehensive details of a role (pages, buttons, and users).            |
+| `POST`   | `/roles/{id}/details`   | Save all details for a role (info, pages, buttons, users) in one transaction. |
 
 *(Note: User management endpoints are part of the overall design but are not detailed here. The focus is on the core role and permission management.)*
 
